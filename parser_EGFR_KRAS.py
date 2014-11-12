@@ -2,7 +2,7 @@ import sys
 
 inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
 inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
-outFile = open("outfile_KRAS.txt", "w")
+outFile = open("outfile_EGFR.txt", "w")
 
 # set up dict
 refs = {}
@@ -23,21 +23,21 @@ def identify(mutation):
 		line = line.strip().split('\t')
 		if line[CONST_NAME] == mutation:
 			if line[CONST_SIFT] == 'D' and line[CONST_POLY] == 'D':
-				refs[line[CONST_CODE][0:11]] = line[CONST_GENE]
+				refs[line[CONST_CODE][0:12]] = line[CONST_GENE]
 
 # function to idenify patient_codes with LUAD (lung adenocarcinoma)
 def match(cancerType):
 	for line in inMutFile:
 		line = line.strip().split('\t')
 		if line[1] == cancerType:
-			code = line[0][0:11]
+			code = line[0][0:12]
 			if code in refs:
 				patients[code] = refs[code]
 
 
 
 # call functions
-identify("KRAS")
+identify("EGFR")
 match("LUAD")
 
 # write results to file
