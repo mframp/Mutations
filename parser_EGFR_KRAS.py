@@ -2,7 +2,7 @@ import sys
 
 inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
 inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
-outFile = open("outfile_EGFR_KRAS.txt", "w")
+outFile = open("outfile_KRAS.txt", "w")
 
 # set up dict
 refs = {}
