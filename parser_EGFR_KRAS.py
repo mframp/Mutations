@@ -1,8 +1,10 @@
 import sys
 
-inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
-inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
-outFile = open("outfile_EGFR.txt", "w")
+# inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
+inAnnFile = open("test_input.txt", "r")
+# inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
+inMutFile =  open("test_LUAD_input.txt", "r")
+outFile = open("outfile_test_EGFR.txt", "w")
 
 # set up dict
 refs = {}
@@ -33,6 +35,8 @@ def match(cancerType):
 			code = line[0][0:12]
 			if code in refs:
 				patients[code] = refs[code]
+			else:
+				patients[code] = 'NA'
 
 
 
