@@ -1,14 +1,16 @@
 import sys
 
-# inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
-inAnnFile = open("test_input.txt", "r")
-# inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
-inMutFile =  open("test_LUAD_input.txt", "r")
-outFile = open("outfile_test_EGFR.txt", "w")
+inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
+# inAnnFile = open("test_input.txt", "r")
+inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
+# inMutFile =  open("test_CancerTypes_input.txt", "r")
+outFile = open("outfile_EGFR.txt", "w")
+analyticsFile = open("analyze_outfile.txt", "w")
 
 # set up dict
-refs = {}
 patients = {}
+mutatedMaf = {}
+mutatedCancerTypes = {}
 
 # define constants
 CONST_SIFT = 59
@@ -25,7 +27,11 @@ def identify(mutation):
 		line = line.strip().split('\t')
 		if line[CONST_NAME] == mutation:
 			if line[CONST_SIFT] == 'D' and line[CONST_POLY] == 'D':
-				refs[line[CONST_CODE][0:12]] = line[CONST_GENE]
+				code = line[CONST_CODE][0:12] 
+				if code in patients:				 
+					patients[code] = line[CONST_GENE]
+				else:
+					patients[code] = line[CONST_GENE] + " (FOUND IN .maf BUT NOT cancerTypes.txt)"
 
 # function to idenify patient_codes with LUAD (lung adenocarcinoma)
 def match(cancerType):
@@ -33,18 +39,34 @@ def match(cancerType):
 		line = line.strip().split('\t')
 		if line[1] == cancerType:
 			code = line[0][0:12]
-			if code in refs:
-				patients[code] = refs[code]
-			else:
-				patients[code] = 'NA'
+			patients[code] = 'NA'				
+
+# function to analyze data
+def analyze():
+	for key,val in patients.iteritems():
+		if val[-1] == ')':
+			mutatedMaf[key] = val
+		elif val[0] == 'p':
+			mutatedCancerTypes[key] = val
 
 
 
 # call functions
-identify("EGFR")
 match("LUAD")
+identify("EGFR")
+analyze()
 
-# write results to file
+# write data to file
 for key,val in patients.iteritems():
 	outFile.write(key + "\t" + val + '\n')
 outFile.close()
+
+# write analytics file
+none = len(patients) - len(mutatedMaf) - len(mutatedCancerTypes)
+analyticsFile.write("Total Patients: " + str(len(patients)) + '\n')
+analyticsFile.write("Patients with EGFR mutation in CancerTypes.txt: " + str(len(mutatedCancerTypes)) + '\n')
+analyticsFile.write("Patients with EGFR mutation in ONLY .maf: " + str(len(mutatedMaf)) + '\n')
+analyticsFile.write("Patients without an EGFR mutation: " + str(none) + '\n')
+analyticsFile.close()
+
+
