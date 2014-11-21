@@ -1,6 +1,6 @@
 Total Patients: 230
-Patients with EGFR mutation in CancerTypes.txt and .maf : 11
-Patients without an EGFR mutation: 219
+Patients with EGFR mutation and LUAD : 11
+Patients without an EGFR mutation and LUAD: 219
 
 p.Gly719Ala	1
 p.Thr790Met	1

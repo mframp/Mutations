@@ -79,8 +79,8 @@ outFile.close()
 # write analytics file
 none = len(patients) - len(mutatedMaf) - len(mutatedCancerTypes)
 analyticsFile.write("Total Patients: " + str(len(patients)) + '\n')
-analyticsFile.write("Patients with EGFR mutation in CancerTypes.txt and .maf : " + str(len(mutatedCancerTypes)) + '\n')
-analyticsFile.write("Patients without an EGFR mutation: " + str(none) + '\n\n')
+analyticsFile.write("Patients with EGFR mutation and LUAD : " + str(len(mutatedCancerTypes)) + '\n')
+analyticsFile.write("Patients without an EGFR mutation and LUAD: " + str(none) + '\n\n')
 for key,val in mutations.iteritems():
 	analyticsFile.write(key + "\t" + str(val) + '\n')
 analyticsFile.close()
