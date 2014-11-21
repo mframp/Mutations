@@ -11,6 +11,7 @@ analyticsFile = open("analyze_outfile.txt", "w")
 patients = {}
 mutatedMaf = {}
 mutatedCancerTypes = {}
+mutations = {}
 
 # define constants
 CONST_SIFT = 59
@@ -27,11 +28,19 @@ def identify(mutation):
 		line = line.strip().split('\t')
 		if line[CONST_NAME] == mutation:
 			if line[CONST_SIFT] == 'D' and line[CONST_POLY] == 'D':
-				code = line[CONST_CODE][0:12] 
-				if code in patients:				 
-					patients[code] = line[CONST_GENE]
-				else:
-					patients[code] = line[CONST_GENE] + " (FOUND IN .maf BUT NOT cancerTypes.txt)"
+				code = line[CONST_CODE][0:12]
+				# If patient had LUAD in other file 
+				if code in patients:
+					# Test for multiple mutations in one patient
+					if patients[code] == 'NA':				 
+						patients[code] = line[CONST_GENE] + "\t"
+					else:
+						patients[code] += line[CONST_GENE] + "\t"
+					# Dict to keep track of mutation occurances (p.Gys6Leu => 1)
+					if line[CONST_GENE] in mutations:
+						mutations[line[CONST_GENE]] += 1
+					else:
+						mutations[line[CONST_GENE]] = 1
 
 # function to idenify patient_codes with LUAD (lung adenocarcinoma)
 def match(cancerType):
@@ -57,16 +66,23 @@ identify("EGFR")
 analyze()
 
 # write data to file
+#patients = sorted(patients.values())
+muts = ''
 for key,val in patients.iteritems():
-	outFile.write(key + "\t" + val + '\n')
+	if val == 'NA':
+		outFile.write(key + "\t" + val + '\n')
+	else:
+		muts += key + "\t" + val + '\n'
+outFile.write(muts)
 outFile.close()
 
 # write analytics file
 none = len(patients) - len(mutatedMaf) - len(mutatedCancerTypes)
 analyticsFile.write("Total Patients: " + str(len(patients)) + '\n')
-analyticsFile.write("Patients with EGFR mutation in CancerTypes.txt: " + str(len(mutatedCancerTypes)) + '\n')
-analyticsFile.write("Patients with EGFR mutation in ONLY .maf: " + str(len(mutatedMaf)) + '\n')
-analyticsFile.write("Patients without an EGFR mutation: " + str(none) + '\n')
+analyticsFile.write("Patients with EGFR mutation in CancerTypes.txt and .maf : " + str(len(mutatedCancerTypes)) + '\n')
+analyticsFile.write("Patients without an EGFR mutation: " + str(none) + '\n\n')
+for key,val in mutations.iteritems():
+	analyticsFile.write(key + "\t" + str(val) + '\n')
 analyticsFile.close()
 
 
