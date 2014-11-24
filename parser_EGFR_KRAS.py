@@ -1,11 +1,13 @@
 import sys
 
+mutName = "KRAS"
+
 inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
 # inAnnFile = open("test_input.txt", "r")
 inMutFile =  open("PANCAN_Mutation_CancerTypes.txt", "r")
 # inMutFile =  open("test_CancerTypes_input.txt", "r")
-outFile = open("outfile_EGFR.txt", "w")
-analyticsFile = open("analyze_outfile.txt", "w")
+outFile = open("outfile_" + mutName + ".txt", "w")
+analyticsFile = open("analyze_outfile_" + mutName + ".txt", "w")
 
 # set up dict
 patients = {}
@@ -62,7 +64,7 @@ def analyze():
 
 # call functions
 match("LUAD")
-identify("EGFR")
+identify(mutName)
 analyze()
 
 # write data to file
@@ -79,8 +81,8 @@ outFile.close()
 # write analytics file
 none = len(patients) - len(mutatedMaf) - len(mutatedCancerTypes)
 analyticsFile.write("Total Patients: " + str(len(patients)) + '\n')
-analyticsFile.write("Patients with EGFR mutation and LUAD : " + str(len(mutatedCancerTypes)) + '\n')
-analyticsFile.write("Patients without an EGFR mutation and LUAD: " + str(none) + '\n\n')
+analyticsFile.write("Patients with " + mutName + " mutation and LUAD : " + str(len(mutatedCancerTypes)) + '\n')
+analyticsFile.write("Patients without a(n) " + mutName + " mutation and LUAD: " + str(none) + '\n\n')
 for key,val in mutations.iteritems():
 	analyticsFile.write(key + "\t" + str(val) + '\n')
 analyticsFile.close()

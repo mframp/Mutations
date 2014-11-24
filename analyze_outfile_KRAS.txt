@@ -1,0 +1,8 @@
+Total Patients: 230
+Patients with KRAS mutation and LUAD : 47
+Patients without a(n) KRAS mutation and LUAD: 183
+
+p.Gly13Cys	1
+p.Gly12Cys	30
+p.Gly12Val	15
+p.Ala146Pro	1
