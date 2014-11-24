@@ -74,7 +74,7 @@ for key,val in patients.iteritems():
 	if val == 'NA':
 		outFile.write(key + "\t" + val + '\n')
 	else:
-		muts += key + "\t" + val + '\n'
+		muts += key + "\t" + mutName + "_" + val + '\n'
 outFile.write(muts)
 outFile.close()
 
@@ -84,7 +84,7 @@ analyticsFile.write("Total Patients: " + str(len(patients)) + '\n')
 analyticsFile.write("Patients with " + mutName + " mutation and LUAD : " + str(len(mutatedCancerTypes)) + '\n')
 analyticsFile.write("Patients without a(n) " + mutName + " mutation and LUAD: " + str(none) + '\n\n')
 for key,val in mutations.iteritems():
-	analyticsFile.write(key + "\t" + str(val) + '\n')
+	analyticsFile.write(mutName + "_" + key + "\t" +  str(val) + '\n')
 analyticsFile.close()
 
 
