@@ -6,7 +6,7 @@ group1 = 'p.Gly12Cys'
 group2 = 'p.Gly12Val'
 mutName = "KRAS"
 
-inExpFile = open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM.txt", "r")
+inExpFile = open("/fslhome/srp33/fsl_groups/fslg_piccololab/PANCAN20/GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM.txt", "r")
 resultFile = open("outfile_" + mutName + ".txt", "r")
 
 patientsMut1 = []
@@ -45,7 +45,7 @@ print match2
 
 
 #append line to file
-with open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM.txt", "a") as expData:
+with open("/fslhome/srp33/fsl_groups/fslg_piccololab/compute/CancerMutationClustering/GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM.txt", "a") as expData:
 	expData.write("Class\t")
 	for match in matches:
 		expData.write(match + '\t')
