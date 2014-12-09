@@ -1,8 +1,0 @@
-Total Patients: 230
-Patients with EGFR mutation and LUAD : 11
-Patients without an EGFR mutation and LUAD: 219
-
-p.Gly719Ala	1
-p.Thr790Met	1
-p.Gly721Val	1
-p.Leu858Arg	9

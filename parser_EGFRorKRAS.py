@@ -1,6 +1,6 @@
 import sys
 
-mutName = "KRAS"
+mutName = "EGFR"
 
 inAnnFile = open("PANCAN_Cleaned_Filtered_Annotated.maf", "r")
 # inAnnFile = open("test_input.txt", "r")
