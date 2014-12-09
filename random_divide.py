@@ -1,8 +1,9 @@
 import random
 
-inFile = open("outfile_EGFR_KRAS.txt", "r")
-outTrain = open("trainData.txt", "w")
-outTest = open("testData.txt", "w")
+# inFile = open("outfile_EGFR_KRAS.txt", "r")
+inFile = open("test_random_in.txt", "r")
+outTrain = open("test_trainData.txt", "w")
+outTest = open("test_testData.txt", "w")
 
 mut1 = "EGFR"
 mut2 = "KRAS"
