@@ -21,23 +21,32 @@ CONST_POLY = 60
 CONST_NAME = 0
 CONST_CODE = 15
 CONST_GENE = 35
+CONST_VARIANT_CLASS = 8
+CONST_START_POSITION = 5
 
 # function to identify patient_codes where name = KRAS and
 # 	SIFT_pred = D and
 #	Polyphen2_HVAR_pred = D
+def makeInfo(line):
+	info = line[CONST_VARIANT_CLASS] + '_' + line[CONST_GENE] + '_' + line[CONST_START_POSITION] + '\t'
+	return info
+
 def identify(mutation):
 	for line in inAnnFile:
 		line = line.strip().split('\t')
 		if line[CONST_NAME] == mutation:
 			if line[CONST_SIFT] == 'D' and line[CONST_POLY] == 'D':
 				code = line[CONST_CODE][0:12]
+
 				# If patient had LUAD in other file 
 				if code in patients:
+					
 					# Test for multiple mutations in one patient
-					if patients[code] == 'NA':				 
-						patients[code] = line[CONST_GENE] + "\t"
+					if patients[code] == 'NA':
+						patients[code] = makeInfo(line)			
 					else:
-						patients[code] += line[CONST_GENE] + "\t"
+						patients[code] += makeInfo(line)
+
 					# Dict to keep track of mutation occurances (p.Gys6Leu => 1)
 					if line[CONST_GENE] in mutations:
 						mutations[line[CONST_GENE]] += 1
