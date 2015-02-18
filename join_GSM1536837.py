@@ -5,18 +5,38 @@ from itertools import izip
 # inFile1 = open("rtest.txt", "r")
 # inFile2 = open("rtest2.txt", "r")
 # outFile = open("rtest_outfile.txt", "w")
-inFile1 = open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM_EGFRoutfile.txt", "r")
-inFile2 = open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM_KRASoutfile.txt", "r")
-outFile = open("GSM1536837_TCGA_20_joined_outfile.txt", "w")
+# inFile1 = open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM_EGFRoutfile.txt", "r")
+inFile1 = open("GSM1536837_TCGA_20_EGFR_KRAS_BRAF_outfile.txt", "r")
+inFile2 = open("GSM1536837_TCGA_20.Illumina.tumor_Rsubread_TPM_TP53outfile.txt", "r")
+outFile = open("GSM1536837_TCGA_20_EGFR_KRAS_BRAF_TP53_outfile.txt", "w")
 
 headerItems = []
-headers = inFile1.readline().strip().replace("Missense_Mutation_","").split('\t')
-for head in headers:
-	headerItems.append(head)
+# patientIDs used to check for duplicate patient ids,
+# (patients with mutations in more than one of: KRAS,BRAF,TP53,EGFR)
+patientIDs = []
 
-headers2 = inFile2.readline().strip().replace("Missense_Mutation_","").split('\t')
+headers = inFile1.readline().strip().split('\t')
+for head in headers:
+	# patientIDs.append(head[0:12])
+
+	# if TCGA_12_2432_ on front, chop it off
+	if len(head) > 16:
+		headerItems.append(head[13:])
+	else:
+		headerItems.append(head)
+
+headers2 = inFile2.readline().strip().split('\t')
 for head in headers2:
-	headerItems.append(head)
+	# if head[0:12] in patientIDs:
+	# 	print head[0:12]
+	if len(head) > 16:
+		headerItems.append(head[13:])
+	else:
+		headerItems.append(head)
+
+# DUPLICATES:
+# TCGA-21-5787
+# TCGA-33-6737
 
 # Write header line	
 print len(headerItems)
